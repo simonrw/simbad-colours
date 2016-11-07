@@ -12,6 +12,7 @@ import numpy as np
 from sklearn import model_selection, ensemble, preprocessing, tree, metrics, externals
 import time
 from contextlib import contextmanager
+import os
 
 
 memory = externals.joblib.Memory(cachedir='.cache')
@@ -19,6 +20,15 @@ memory = externals.joblib.Memory(cachedir='.cache')
 # In[7]:
 
 def iterate_rows():
+    filename = 'simbadresult.csv'
+    if not os.path.isfile(filename):
+        compressed_filename = '{}.xz'.format(filename)
+        if os.path.isfile(compressed_filename):
+            raise OSError('Found compressed file: {}. Uncompress with unxz'.format(
+                compressed_filename))
+        else:
+            raise OSError('Cannot find {}.'.format(filename))
+
     with open('simbadresult.csv') as infile:
         reader = csv.DictReader(infile)
         for row in reader:
