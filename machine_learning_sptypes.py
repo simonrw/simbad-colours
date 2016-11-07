@@ -10,6 +10,8 @@ import itertools
 import math
 import numpy as np
 from sklearn import model_selection, ensemble, preprocessing, tree, metrics, externals
+import time
+from contextlib import contextmanager
 
 
 memory = externals.joblib.Memory(cachedir='.cache')
@@ -149,6 +151,14 @@ def build_colours(mags, all_colours):
     return np.array(out)
 
 
+@contextmanager
+def timeblock(label):
+    start = time.time()
+    yield
+    end = time.time()
+    print('{}: time taken: {:.3e}s'.format(label, end - start))
+
+
 if __name__ == '__main__':
 
     X, y, colour_names, labels = build_training_data()
@@ -203,4 +213,5 @@ if __name__ == '__main__':
     }
 
     for star in stars:
-        predict_star(star, stars[star]['mags'], stars[star]['expected'])
+        with timeblock(star):
+            predict_star(star, stars[star]['mags'], stars[star]['expected'])
