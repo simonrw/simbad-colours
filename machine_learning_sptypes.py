@@ -147,7 +147,7 @@ def build_predictor(X, y):
         'n_estimators': [3, 10, 50],
     }
     clf = model_selection.GridSearchCV(ensemble.RandomForestClassifier(), params,
-                                    scoring=sptype_score, n_jobs=-1)
+                                    scoring=sptype_score)
     clf.fit(X, y)
     return clf.best_estimator_
 
