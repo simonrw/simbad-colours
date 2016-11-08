@@ -144,10 +144,9 @@ sptype_score = metrics.make_scorer(sptype_error, greater_is_better=False)
 @memory.cache
 def build_predictor(X, y):
     params = {
-        'n_estimators': [3, 10, 50],
+        'n_estimators': [10, ],
     }
-    clf = model_selection.GridSearchCV(ensemble.RandomForestClassifier(), params,
-                                    scoring=sptype_score)
+    clf = model_selection.GridSearchCV(ensemble.RandomForestClassifier(), params)
     clf.fit(X, y)
     return clf.best_estimator_
 
