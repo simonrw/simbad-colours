@@ -141,7 +141,6 @@ def sptype_error(a, b):
 
 sptype_score = metrics.make_scorer(sptype_error, greater_is_better=False)
 
-@memory.cache
 def build_predictor(X, y):
     params = {
         'n_estimators': [10, ],
