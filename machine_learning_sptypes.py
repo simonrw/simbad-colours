@@ -36,7 +36,7 @@ def iterate_rows():
 
 # SPTYPE_REGEX = re.compile(r'[OBAFGKM][0-9](I|II|III|IV|V)')
 # For now only handle main sequence stars
-SPTYPE_REGEX = re.compile(r'(?P<typ>[OBAFGKM])(?P<cls>[0-9](\.[0-9]+)?)(<?P<subtyp>I|II|III|IV|V)')
+SPTYPE_REGEX = re.compile(r'(?P<typ>[OBAFGKM])(?P<cls>[0-9](\.[0-9]+)?)V')
 SP_TYPE_MAPPING = {value: index for (index, value) in enumerate('OBAFGKM')}
 
 
