@@ -1,5 +1,5 @@
-
-# coding: utf-8
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # In[226]:
 
@@ -52,7 +52,41 @@ def sptype_float(sptype):
         decimal_component = float(match.group('cls')) / 9.
         return int_component + decimal_component
 
-@memory.cache
+def build_limited_training_data():
+    required_bands = ['U', 'V', 'R', 'J', 'H', 'K']
+    rows = {}
+    for i, row in enumerate(iterate_rows()):
+        sp_type = parse_sptype(row['sp_type'])
+        if not sp_type:
+            continue
+
+        mag_label = row['filter']
+        if mag_label not in required_bands:
+            continue
+
+        mag_value = float(row['flux'])
+        obj_id = row['main_id']
+
+        if obj_id in rows:
+            if 'sp_type' not in rows[obj_id]:
+                rows[obj_id]['sp_type'] = sp_type
+            rows[obj_id][mag_label] = mag_value
+        else:
+            rows[obj_id] = {'sp_type': sp_type}
+            for filt in required_bands:
+                rows[obj_id][filt] = float('nan')
+            rows[obj_id][mag_label] = mag_value
+
+    rows = [row for row in list(rows.values())
+            if np.all([np.isfinite(row[colour]) for colour in required_bands])]
+    import IPython; IPython.embed(); exit(1)
+
+
+
+
+build_limited_training_data()
+exit()
+
 def build_training_data():
 
     unique_objects = set()
